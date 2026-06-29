@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Family Vacation Planner 2025</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.10.0/dist/tabler-icons.min.css">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f0ede8; color: #1a1a18; min-height: 100vh; }
+
+.app-header {
+  background: #fff;
+  border-bottom: 1px solid #e0ddd8;
+  padding: 12px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky; top: 0; z-index: 100;
+}
+.app-header h1 { font-size: 15px; font-weight: 500; }
+.route { display: flex; align-items: center; gap: 5px; font-size: 12px; color: #888; }
+.rdot { width: 7px; height: 7px; border-radius: 50%; display: inline-block; }
+
+.layout { display: grid; grid-template-columns: 260px 1fr; min-height: calc(100vh - 45px); }
+
+/* SIDEBAR */
+.sidebar {
+  background: #fff;
+  border-right: 1px solid #e0ddd8;
+  display: flex;
+  flex-direction: column;
+  position: sticky;
+  top: 45px;
+  height: calc(100vh - 45px);
+  overflow: hidden;
+}
+.sidebar-top { padding: 14px 14px 8px; border-bottom: 1px solid #e0ddd8; }
+.sidebar-top h2 { font-size: 12px; font-weight: 500; color: #999; text-transform: uppercase; letter-spacing: 0.06em; }
+.sidebar-top p { font-size: 11px; color: #bbb; margin-top: 2px; }
+
+.city-tabs { display: flex; }
+.ctab {
+  flex: 1; padding: 8px 4px; font-size: 11px; font-weight: 500;
+  text-align: center; cursor: pointer; border: none; background: none;
+  color: #aaa; border-bottom: 2px solid transparent; transition: all 0.12s;
+}
+.ctab.active { color: #1a1a18; border-bottom-color: #1a1a18; }
+
+.bank-scroll { overflow-y: auto; flex: 1; padding: 10px 12px; }
+.bank-section { margin-bottom: 14px; }
+.bank-section-label {
+  font-size: 10px; font-weight: 500; color: #bbb;
+  text-transform: uppercase; letter-spacing: 0.07em;
+  margin-bottom: 6px; display: flex; align-items: center; gap: 4px;
+}
+.bank-chips { display: flex; flex-direction: column; gap: 4px; }
+
+.chip {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 6px 10px; border-radius: 8px; font-size: 12px;
+  cursor: grab; border: 1px solid; user-select: none;
+  transition: opacity 0.15s, transform 0.1s;
+  width: 100%;
+}
+.chip:active { cursor: grabbing; transform: scale(1.02); }
+.chip.used { display: none; }
+.chip i { font-size: 13px; flex-shrink: 0; }
+
+.chip.activity { background: #EAF3DE; border-color: #97C459; color: #27500A; }
+.chip.food     { background: #FAECE7; border-color: #F0997B; color: #712B13; }
+.chip.note     { background: #E6F1FB; border-color: #85B7EB; color: #0C447C; }
+
+.add-row {
+  display: flex; gap: 6px; padding: 10px 12px;
+  border-top: 1px solid #e0ddd8;
+}
+.add-row input {
+  flex: 1; border: 1px solid #ddd; border-radius: 6px;
+  padding: 6px 8px; font-size: 12px; outline: none; background: #fafafa;
+}
+.add-row input:focus { border-color: #378ADD; background: #fff; }
+.add-row select {
+  border: 1px solid #ddd; border-radius: 6px; padding: 5px 6px;
+  font-size: 11px; background: #fff; cursor: pointer; outline: none;
+}
+.add-row button {
+  background: #1a1a18; color: #fff; border: none;
+  border-radius: 6px; padding: 6px 10px; font-size: 13px; cursor: pointer;
+}
+
+/* MAIN */
+.main { padding: 20px; display: flex; flex-direction: column; gap: 14px; overflow-y: auto; }
+
+/* DAY CARD */
+.day-card {
+  background: #fff;
+  border-radius: 14px;
+  border: 1px solid #e0ddd8;
+  overflow: hidden;
+}
+
+.day-header {
+  display: flex; align-items: center; gap: 10px;
+  padding: 10px 14px;
+  border-bottom: 1px solid #e0ddd8;
+}
+.day-num {
+  width: 36px; height: 36px; border-radius: 10px;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  flex-shrink: 0; line-height: 1;
+}
+.day-num .dn { font-size: 10px; font-weight: 500; margin-bottom: 1px; }
+.day-num .dd { font-size: 15px; font-weight: 600; }
+.day-info { flex: 1; }
+.day-info h3 { font-size: 13px; font-weight: 500; }
+.day-info p { font-size: 11px; color: #aaa; margin-top: 1px; }
+.nap-pill {
+  font-size: 10px; background: #EEEDFE; color: #534AB7;
+  border: 1px solid #AFA9EC; border-radius: 20px;
+  padding: 3px 8px; display: flex; align-items: center; gap: 3px;
+  white-space: nowrap;
+}
+
+.drive-banner {
+  display: flex; align-items: center; gap: 8px;
+  padding: 8px 14px; background: #F1EFE8;
+  font-size: 12px; color: #5F5E5A;
+  border-bottom: 1px solid #e0ddd8;
+}
+.drive-banner i { font-size: 15px; }
+
+/* THE CARD BODY — two columns */
+.day-body {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  min-height: 130px;
+}
+
+.period {
+  display: flex; flex-direction: column; padding: 10px 12px;
+}
+.period-label {
+  font-size: 10px; font-weight: 500; color: #bbb;
+  text-transform: uppercase; letter-spacing: 0.06em;
+  margin-bottom: 8px; display: flex; align-items: center; gap: 4px;
+}
+.period-label i { font-size: 12px; }
+
+.drop-zone {
+  flex: 1; border-radius: 10px;
+  border: 1.5px dashed #ddd; background: #fafafa;
+  min-height: 80px; padding: 6px;
+  display: flex; flex-wrap: wrap; gap: 5px; align-content: flex-start;
+  transition: background 0.12s, border-color 0.12s;
+  position: relative;
+}
+.drop-zone.drag-over { background: #E6F1FB; border-color: #378ADD; border-style: solid; }
+.drop-zone-hint {
+  font-size: 11px; color: #ccc; position: absolute;
+  inset: 0; display: flex; align-items: center; justify-content: center;
+  pointer-events: none;
+}
+
+/* chips placed in slots are inline/small */
+.placed-chip {
+  display: inline-flex; align-items: center; gap: 4px;
+  padding: 4px 8px; border-radius: 20px; font-size: 11px;
+  border: 1px solid; cursor: default;
+  max-width: 100%; overflow: hidden;
+}
+.placed-chip span { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 140px; }
+.placed-chip i.icon { font-size: 12px; flex-shrink: 0; }
+.placed-chip.activity { background: #EAF3DE; border-color: #97C459; color: #27500A; }
+.placed-chip.food     { background: #FAECE7; border-color: #F0997B; color: #712B13; }
+.placed-chip.note     { background: #E6F1FB; border-color: #85B7EB; color: #0C447C; }
+.remove-btn {
+  background: none; border: none; cursor: pointer; font-size: 13px;
+  color: inherit; opacity: 0.45; line-height: 1; padding: 0; margin-left: 2px; flex-shrink: 0;
+}
+.remove-btn:hover { opacity: 1; }
+
+.nap-divider {
+  width: 1px; background: #EEEDFE; display: flex; flex-direction: column;
+  align-items: center; justify-content: center; gap: 4px; padding: 10px 0;
+  position: relative;
+}
+.nap-divider::before {
+  content: ''; position: absolute; inset: 0; background: #EEEDFE;
+}
+.nap-divider-label {
+  writing-mode: vertical-rl; text-orientation: mixed;
+  font-size: 10px; font-weight: 500; color: #7F77DD;
+  letter-spacing: 0.05em; white-space: nowrap;
+  position: relative; z-index: 1; transform: rotate(180deg);
+  display: flex; align-items: center; gap: 4px;
+}
+</style>
+</head>
+<body>
+
+<div class="app-header">
+  <h1>Family vacation planner — July 2025</h1>
+  <div class="route">
+    <span class="rdot" style="background:#378ADD"></span> Virginia Beach
+    <span>→</span><span class="rdot" style="background:#1D9E75"></span> Pittsburgh
+    <span>→</span><span class="rdot" style="background:#D85A30"></span> Chicago
+    <span>→</span><span class="rdot" style="background:#7F77DD"></span> Fayetteville WV
+    <span>→</span><span class="rdot" style="background:#378ADD"></span> Home
+  </div>
+</div>
+
+<div class="layout">
+  <div class="sidebar">
+    <div class="sidebar-top">
+      <h2>Activity bank</h2>
+      <p>Drag to a day — items lock to their city</p>
+    </div>
+    <div class="city-tabs">
+      <button class="ctab active" onclick="showCity('pitt')">Pittsburgh</button>
+      <button class="ctab" onclick="showCity('chi')">Chicago</button>
+      <button class="ctab" onclick="showCity('fay')">Fayetteville</button>
+    </div>
+    <div class="bank-scroll" id="bank-scroll"></div>
+    <div class="add-row">
+      <input id="new-label" placeholder="Add item…" onkeydown="if(event.key==='Enter')addCustom()">
+      <select id="new-type">
+        <option value="activity">Activity</option>
+        <option value="food">Food</option>
+        <option value="note">Note</option>
+      </select>
+      <button onclick="addCustom()"><i class="ti ti-plus"></i></button>
+    </div>
+  </div>
+
+  <div class="main" id="main"></div>
+</div>
+
+<script>
+const CITY_DAYS = {
+  pitt: ['jul12','jul13','jul14'],
+  chi:  ['jul14','jul15','jul16','jul17','jul18','jul19'],
+  fay:  ['jul19','jul20','jul21'],
+};
+
+const BANK = {
+  pitt: {
+    activities: [
+      { id:'p_a1', label:'Carnegie Museum of Natural History', icon:'ti-bone' },
+      { id:'p_a2', label:'Carnegie Museum of Art', icon:'ti-palette' },
+      { id:'p_a3', label:"Children's Museum of Pittsburgh", icon:'ti-building' },
+      { id:'p_a4', label:'Duquesne Incline', icon:'ti-mountain' },
+      { id:'p_a5', label:'Kennywood Park', icon:'ti-mood-happy' },
+      { id:'p_a6', label:'Point State Park', icon:'ti-trees' },
+      { id:'p_a7', label:'Pittsburgh Zoo', icon:'ti-paw' },
+      { id:'p_a8', label:'Strip District walk', icon:'ti-walk' },
+      { id:'p_a9', label:'Phipps Conservatory', icon:'ti-leaf' },
+      { id:'p_a10', label:'National Aviary', icon:'ti-feather' },
+    ],
+    food: [
+      { id:'p_f1', label:'Primanti Brothers', icon:'ti-sandwich' },
+      { id:'p_f2', label:"Pamela's Diner (breakfast)", icon:'ti-egg' },
+      { id:'p_f3', label:'Smallman Galley', icon:'ti-building-store' },
+      { id:'p_f4', label:"Prantl's Bakery", icon:'ti-cake' },
+      { id:'p_f5', label:'Penn Brewery', icon:'ti-glass-full' },
+      { id:'p_f6', label:'Original Hot Dog Shop', icon:'ti-meat' },
+      { id:'p_f7', label:'La Palapa (Mexican)', icon:'ti-building-store' },
+    ]
+  },
+  chi: {
+    activities: [
+      { id:'c_a1', label:'Millennium Park + The Bean', icon:'ti-map-pin' },
+      { id:'c_a2', label:'Chicago Riverwalk', icon:'ti-sailing' },
+      { id:'c_a3', label:'Navy Pier', icon:'ti-ferris-wheel' },
+      { id:'c_a4', label:'Art Institute of Chicago', icon:'ti-palette' },
+      { id:'c_a5', label:'Lincoln Park Zoo (free)', icon:'ti-paw' },
+      { id:'c_a6', label:'Museum of Science + Industry', icon:'ti-microscope' },
+      { id:'c_a7', label:'Maggie Daley Park playground', icon:'ti-trees' },
+      { id:'c_a8', label:'Field Museum', icon:'ti-bone' },
+      { id:'c_a9', label:'Shedd Aquarium', icon:'ti-fish' },
+      { id:'c_a10', label:'Architecture boat tour', icon:'ti-building' },
+      { id:'c_a11', label:'Wicker Park stroll', icon:'ti-walk' },
+    ],
+    food: [
+      { id:'c_f1', label:"Lou Malnati's (deep dish)", icon:'ti-pizza' },
+      { id:'c_f2', label:"Au Cheval (burger)", icon:'ti-meat' },
+      { id:'c_f3', label:"Portillo's Hot Dogs", icon:'ti-meat' },
+      { id:'c_f4', label:"Giordano's (deep dish)", icon:'ti-pizza' },
+      { id:'c_f5', label:'Xoco by Rick Bayless', icon:'ti-building-store' },
+      { id:'c_f6', label:'The Purple Pig', icon:'ti-building-store' },
+      { id:'c_f7', label:'Girl and the Goat', icon:'ti-building-store' },
+      { id:'c_f8', label:'Big Star tacos', icon:'ti-building-store' },
+      { id:'c_f9', label:'Summer House (brunch)', icon:'ti-egg' },
+    ]
+  },
+  fay: {
+    activities: [
+      { id:'f_a1', label:'New River Gorge Bridge walk', icon:'ti-bridge' },
+      { id:'f_a2', label:'Canyon Rim Visitor Center', icon:'ti-info-circle' },
+      { id:'f_a3', label:'Long Point Trail (easy)', icon:'ti-walk' },
+      { id:'f_a4', label:'Grandview Overlook', icon:'ti-mountain' },
+      { id:'f_a5', label:'Sandstone Falls swim', icon:'ti-waves' },
+    ],
+    food: [
+      { id:'f_f1', label:'Cathedral Cafe', icon:'ti-coffee' },
+      { id:'f_f2', label:'Pies and Pints', icon:'ti-pizza' },
+      { id:'f_f3', label:'Secret Sandwich Society', icon:'ti-sandwich' },
+      { id:'f_f4', label:"Elvira's Mexican Grill", icon:'ti-building-store' },
+    ]
+  }
+};
+
+const DAYS = [
+  { id:'jul12', label:'Sat', date:'Jul 12', city:'Pittsburgh', cityKey:'pitt', color:'#1D9E75', bg:'#E1F5EE', drive:'Drive from Virginia Beach (~7–8 hrs)' },
+  { id:'jul13', label:'Sun', date:'Jul 13', city:'Pittsburgh', cityKey:'pitt', color:'#1D9E75', bg:'#E1F5EE' },
+  { id:'jul14', label:'Mon', date:'Jul 14', city:'Pittsburgh → Chicago', cityKey:'pitt', color:'#1D9E75', bg:'#E1F5EE', drive:'Drive Pittsburgh → Chicago (~5 hrs)' },
+  { id:'jul15', label:'Tue', date:'Jul 15', city:'Chicago', cityKey:'chi', color:'#D85A30', bg:'#FAECE7' },
+  { id:'jul16', label:'Wed', date:'Jul 16', city:'Chicago', cityKey:'chi', color:'#D85A30', bg:'#FAECE7' },
+  { id:'jul17', label:'Thu', date:'Jul 17', city:'Chicago', cityKey:'chi', color:'#D85A30', bg:'#FAECE7' },
+  { id:'jul18', label:'Fri', date:'Jul 18', city:'Chicago', cityKey:'chi', color:'#D85A30', bg:'#FAECE7' },
+  { id:'jul19', label:'Sat', date:'Jul 19', city:'Chicago → Fayetteville', cityKey:'chi', color:'#D85A30', bg:'#FAECE7', drive:'Drive Chicago → Fayetteville WV (~6 hrs)' },
+  { id:'jul20', label:'Sun', date:'Jul 20', city:'Fayetteville WV', cityKey:'fay', color:'#7F77DD', bg:'#EEEDFE' },
+  { id:'jul21', label:'Mon', date:'Jul 21', city:'Fayetteville → Home', cityKey:'fay', color:'#7F77DD', bg:'#EEEDFE', drive:'Drive home to Virginia Beach (~5 hrs)' },
+];
+
+let schedule = {};
+DAYS.forEach(d => { schedule[d.id] = { am: [], pm: [] }; });
+
+let usedChips = new Set();
+let currentCity = 'pitt';
+let dragging = null;
+
+function chipCityKey(chipId) {
+  if (chipId.startsWith('p_')) return 'pitt';
+  if (chipId.startsWith('c_')) return 'chi';
+  if (chipId.startsWith('f_')) return 'fay';
+  return null;
+}
+
+function getChipById(id) {
+  for (const ck of ['pitt','chi','fay']) {
+    for (const type of ['activities','food']) {
+      const found = BANK[ck][type].find(c => c.id === id);
+      if (found) return { ...found, type: type === 'activities' ? 'activity' : 'food' };
+    }
+  }
+  const custom = (BANK[currentCity]._custom || []).find(c => c.id === id);
+  if (custom) return custom;
+  return null;
+}
+
+function renderBank(cityKey) {
+  const data = BANK[cityKey];
+  let html = '';
+
+  const actVisible = data.activities.filter(c => !usedChips.has(c.id));
+  const foodVisible = data.food.filter(c => !usedChips.has(c.id));
+
+  html += `<div class="bank-section">`;
+  html += `<div class="bank-section-label"><i class="ti ti-map-pin" aria-hidden="true"></i>Activities</div>`;
+  html += `<div class="bank-chips">`;
+  if (actVisible.length === 0) {
+    html += `<div style="font-size:11px;color:#ccc;padding:4px 2px">All placed!</div>`;
+  }
+  data.activities.forEach(c => {
+    const used = usedChips.has(c.id);
+    html += `<div class="chip activity${used?' used':''}" draggable="${!used}" data-id="${c.id}" data-type="activity" data-label="${c.label}" data-icon="${c.icon}">
+      <i class="ti ${c.icon}" aria-hidden="true"></i>${c.label}
+    </div>`;
+  });
+  html += `</div></div>`;
+
+  html += `<div class="bank-section">`;
+  html += `<div class="bank-section-label"><i class="ti ti-fork" aria-hidden="true"></i>Restaurants</div>`;
+  html += `<div class="bank-chips">`;
+  if (foodVisible.length === 0) {
+    html += `<div style="font-size:11px;color:#ccc;padding:4px 2px">All placed!</div>`;
+  }
+  data.food.forEach(c => {
+    const used = usedChips.has(c.id);
+    html += `<div class="chip food${used?' used':''}" draggable="${!used}" data-id="${c.id}" data-type="food" data-label="${c.label}" data-icon="${c.icon}">
+      <i class="ti ${c.icon}" aria-hidden="true"></i>${c.label}
+    </div>`;
+  });
+  html += `</div></div>`;
+
+  const custom = data._custom || [];
+  if (custom.length > 0) {
+    html += `<div class="bank-section">`;
+    html += `<div class="bank-section-label"><i class="ti ti-note" aria-hidden="true"></i>Your additions</div>`;
+    html += `<div class="bank-chips">`;
+    custom.forEach(c => {
+      const used = usedChips.has(c.id);
+      html += `<div class="chip ${c.type}${used?' used':''}" draggable="${!used}" data-id="${c.id}" data-type="${c.type}" data-label="${c.label}" data-icon="${c.icon}">
+        <i class="ti ${c.icon}" aria-hidden="true"></i>${c.label}
+      </div>`;
+    });
+    html += `</div></div>`;
+  }
+
+  document.getElementById('bank-scroll').innerHTML = html;
+  document.querySelectorAll('.bank-scroll .chip:not(.used)').forEach(el => {
+    el.addEventListener('dragstart', onBankDragStart);
+    el.addEventListener('dragend', onDragEnd);
+  });
+}
+
+function renderSchedule() {
+  const main = document.getElementById('main');
+  let html = '';
+
+  DAYS.forEach(day => {
+    const s = schedule[day.id];
+    const isFullDrive = !!day.drive && day.id !== 'jul12';
+
+    html += `<div class="day-card" data-day="${day.id}" data-city="${day.cityKey}">`;
+
+    html += `<div class="day-header">
+      <div class="day-num" style="background:${day.bg};color:${day.color}">
+        <span class="dn">${day.label}</span>
+        <span class="dd">${day.date.split(' ')[1]}</span>
+      </div>
+      <div class="day-info">
+        <h3>${day.date}</h3>
+        <p>${day.city}</p>
+      </div>
+      ${!isFullDrive ? `<div class="nap-pill"><i class="ti ti-moon" aria-hidden="true"></i> Nap 1–3 pm</div>` : ''}
+    </div>`;
+
+    if (day.drive) {
+      html += `<div class="drive-banner"><i class="ti ti-car" aria-hidden="true"></i><span>${day.drive}</span></div>`;
+    }
+
+    if (!isFullDrive) {
+      html += `<div class="day-body">`;
+
+      html += `<div class="period">`;
+      html += `<div class="period-label"><i class="ti ti-sun" aria-hidden="true"></i>Morning · until 1 pm</div>`;
+      html += `<div class="drop-zone" id="dz_${day.id}_am" data-day="${day.id}" data-period="am">`;
+      if (s.am.length === 0) html += `<div class="drop-zone-hint">Drop here</div>`;
+      s.am.forEach(c => html += placedChipHTML(c, day.id, 'am'));
+      html += `</div></div>`;
+
+      html += `<div class="nap-divider"><div class="nap-divider-label"><i class="ti ti-moon" style="font-size:11px" aria-hidden="true"></i>Nap time</div></div>`;
+
+      html += `<div class="period">`;
+      html += `<div class="period-label"><i class="ti ti-sunset" aria-hidden="true"></i>Afternoon · from 3 pm</div>`;
+      html += `<div class="drop-zone" id="dz_${day.id}_pm" data-day="${day.id}" data-period="pm">`;
+      if (s.pm.length === 0) html += `<div class="drop-zone-hint">Drop here</div>`;
+      s.pm.forEach(c => html += placedChipHTML(c, day.id, 'pm'));
+      html += `</div></div>`;
+
+      html += `</div>`;
+    }
+
+    html += `</div>`;
+  });
+
+  html += `<div style="height:16px"></div>`;
+  main.innerHTML = html;
+
+  document.querySelectorAll('.drop-zone').forEach(dz => {
+    dz.addEventListener('dragover', onDragOver);
+    dz.addEventListener('dragleave', onDragLeave);
+    dz.addEventListener('drop', onDrop);
+  });
+}
+
+function placedChipHTML(chip, dayId, period) {
+  return `<div class="placed-chip ${chip.type}" data-id="${chip.id}">
+    <i class="icon ti ${chip.icon}" aria-hidden="true"></i>
+    <span>${chip.label}</span>
+    <button class="remove-btn" onclick="removeChip('${dayId}','${period}','${chip.id}')" title="Remove">×</button>
+  </div>`;
+}
+
+function onBankDragStart(e) {
+  const el = e.currentTarget;
+  dragging = { id: el.dataset.id, type: el.dataset.type, label: el.dataset.label, icon: el.dataset.icon, source: 'bank' };
+  e.dataTransfer.effectAllowed = 'move';
+}
+
+function onDragEnd(e) { dragging = null; }
+
+function onDragOver(e) {
+  if (!dragging) return;
+  const dz = e.currentTarget;
+  const dayEl = dz.closest('[data-day]');
+  const dayId = dayEl.dataset.day;
+  const dayObj = DAYS.find(d => d.id === dayId);
+  const chipCity = chipCityKey(dragging.id);
+  if (chipCity && chipCity !== dayObj.cityKey) return;
+  e.preventDefault();
+  dz.classList.add('drag-over');
+}
+
+function onDragLeave(e) { e.currentTarget.classList.remove('drag-over'); }
+
+function onDrop(e) {
+  e.preventDefault();
+  const dz = e.currentTarget;
+  dz.classList.remove('drag-over');
+  if (!dragging) return;
+
+  const dayId = dz.dataset.day;
+  const period = dz.dataset.period;
+  const dayObj = DAYS.find(d => d.id === dayId);
+  const chipCity = chipCityKey(dragging.id);
+  if (chipCity && chipCity !== dayObj.cityKey) return;
+
+  if (dragging.source === 'placed') {
+    schedule[dragging.fromDay][dragging.fromPeriod] = schedule[dragging.fromDay][dragging.fromPeriod].filter(c => c.id !== dragging.id);
+  }
+
+  if (!schedule[dayId][period].find(c => c.id === dragging.id)) {
+    schedule[dayId][period].push({ id: dragging.id, type: dragging.type, label: dragging.label, icon: dragging.icon });
+    usedChips.add(dragging.id);
+  }
+
+  dragging = null;
+  renderBank(currentCity);
+  renderSchedule();
+  rebindPlaced();
+}
+
+function rebindPlaced() {
+  document.querySelectorAll('.drop-zone').forEach(dz => {
+    dz.addEventListener('dragover', onDragOver);
+    dz.addEventListener('dragleave', onDragLeave);
+    dz.addEventListener('drop', onDrop);
+  });
+}
+
+function removeChip(dayId, period, chipId) {
+  schedule[dayId][period] = schedule[dayId][period].filter(c => c.id !== chipId);
+  usedChips.delete(chipId);
+  renderBank(currentCity);
+  renderSchedule();
+  rebindPlaced();
+}
+
+function showCity(cityKey) {
+  currentCity = cityKey;
+  document.querySelectorAll('.ctab').forEach((t, i) => {
+    t.classList.toggle('active', ['pitt','chi','fay'][i] === cityKey);
+  });
+  renderBank(cityKey);
+}
+
+function addCustom() {
+  const input = document.getElementById('new-label');
+  const type = document.getElementById('new-type').value;
+  const label = input.value.trim();
+  if (!label) return;
+  const iconMap = { activity: 'ti-star', food: 'ti-building-store', note: 'ti-note' };
+  const id = 'custom_' + currentCity + '_' + Date.now();
+  if (!BANK[currentCity]._custom) BANK[currentCity]._custom = [];
+  BANK[currentCity]._custom.push({ id, type, label, icon: iconMap[type] });
+  input.value = '';
+  renderBank(currentCity);
+}
+
+renderBank('pitt');
+renderSchedule();
+</script>
+</body>
+</html>
