@@ -6,214 +6,239 @@
 <title>Family Vacation Planner 2026</title>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.10.0/dist/tabler-icons.min.css">
 <style>
-* { box-sizing: border-box; margin: 0; padding: 0; }
-body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f0ede8; color: #1a1a18; min-height: 100vh; }
+:root {
+  --bg-main: #f8fafc;
+  --bg-card: #ffffff;
+  --text-main: #0f172a;
+  --text-muted: #64748b;
+  --border-color: #e2e8f0;
+  --primary: #3b82f6;
+}
 
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { 
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; 
+  background: var(--bg-main); 
+  color: var(--text-main); 
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* HEADER STYLE */
 .app-header {
-  background: #fff;
-  border-bottom: 1px solid #e0ddd8;
-  padding: 12px 20px;
+  background: var(--bg-card);
+  border-bottom: 1px solid var(--border-color);
+  padding: 16px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  position: sticky; top: 0; z-index: 100;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.02);
+}
+.header-top-row {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  position: sticky; top: 0; z-index: 100;
+  width: 100%;
+  gap: 16px;
+  flex-wrap: wrap;
 }
-.app-header h1 { font-size: 15px; font-weight: 500; }
-.route { display: flex; align-items: center; gap: 5px; font-size: 12px; color: #888; }
-.rdot { width: 7px; height: 7px; border-radius: 50%; display: inline-block; }
+.app-header h1 { font-size: 18px; font-weight: 700; letter-spacing: -0.02em; }
 
-.layout { display: grid; grid-template-columns: 260px 1fr; min-height: calc(100vh - 45px); }
+#share-btn {
+  background: var(--primary);
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 4px rgba(59, 130, 246, 0.2);
+}
+#share-btn:hover { background: #2563eb; transform: translateY(-1px); }
+#share-btn:active { transform: translateY(0); }
+
+.route { display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--text-muted); flex-wrap: wrap; }
+.route span { display: flex; align-items: center; gap: 4px; font-weight: 500;}
+.rdot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; }
+
+/* LAYOUT */
+.layout { display: grid; grid-template-columns: 1fr; min-height: calc(100vh - 65px); }
+@media (min-width: 900px) {
+  .layout { grid-template-columns: 320px 1fr; }
+}
 
 /* SIDEBAR */
 .sidebar {
-  background: #fff;
-  border-right: 1px solid #e0ddd8;
+  background: var(--bg-card);
+  border-bottom: 1px solid var(--border-color);
   display: flex;
   flex-direction: column;
-  position: sticky;
-  top: 45px;
-  height: calc(100vh - 45px);
-  overflow: hidden;
+  max-height: 500px;
 }
-.sidebar-top { padding: 14px 14px 8px; border-bottom: 1px solid #e0ddd8; }
-.sidebar-top h2 { font-size: 12px; font-weight: 500; color: #999; text-transform: uppercase; letter-spacing: 0.06em; }
-.sidebar-top p { font-size: 11px; color: #bbb; margin-top: 2px; }
+@media (min-width: 900px) {
+  .sidebar {
+    border-bottom: none;
+    border-right: 1px solid var(--border-color);
+    position: sticky;
+    top: 65px;
+    height: calc(100vh - 65px);
+    max-height: none;
+  }
+}
+.sidebar-top { padding: 18px 18px 12px; }
+.sidebar-top h2 { font-size: 13px; font-weight: 700; color: var(--text-main); text-transform: uppercase; letter-spacing: 0.05em; }
+.sidebar-top p { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
 
-.city-tabs { display: flex; }
+/* TABS */
+.city-tabs { display: flex; background: #f1f5f9; padding: 4px; border-radius: 8px; margin: 0 18px 12px; }
 .ctab {
-  flex: 1; padding: 8px 4px; font-size: 11px; font-weight: 500;
+  flex: 1; padding: 8px 4px; font-size: 12px; font-weight: 600;
   text-align: center; cursor: pointer; border: none; background: none;
-  color: #aaa; border-bottom: 2px solid transparent; transition: all 0.12s;
+  color: var(--text-muted); border-radius: 6px; transition: all 0.2s;
 }
-.ctab.active { color: #1a1a18; border-bottom-color: #1a1a18; }
+.ctab.active { color: var(--text-main); background: var(--bg-card); box-shadow: 0 1px 3px rgba(0,0,0,0.08); }
 
-.bank-scroll { overflow-y: auto; flex: 1; padding: 10px 12px; }
-.bank-section { margin-bottom: 14px; }
+.bank-scroll { overflow-y: auto; flex: 1; padding: 0 18px 18px; }
+.bank-section { margin-bottom: 20px; }
 .bank-section-label {
-  font-size: 10px; font-weight: 500; color: #bbb;
-  text-transform: uppercase; letter-spacing: 0.07em;
-  margin-bottom: 6px; display: flex; align-items: center; gap: 4px;
+  font-size: 11px; font-weight: 700; color: var(--text-muted);
+  text-transform: uppercase; letter-spacing: 0.05em;
+  margin-bottom: 8px; display: flex; align-items: center; gap: 6px;
 }
-.bank-chips { display: flex; flex-direction: column; gap: 4px; }
+.bank-chips { display: flex; flex-direction: column; gap: 6px; }
 
+/* CHIPS */
 .chip {
-  display: inline-flex; align-items: center; gap: 6px;
-  padding: 6px 10px; border-radius: 8px; font-size: 12px;
-  cursor: grab; border: 1px solid; user-select: none;
-  transition: opacity 0.15s, transform 0.1s;
-  width: 100%;
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 10px 14px; border-radius: 10px; font-size: 13px; font-weight: 500;
+  cursor: grab; border: 1px solid transparent; user-select: none;
+  transition: all 0.2s; width: 100%;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.02);
 }
-.chip:active { cursor: grabbing; transform: scale(1.02); }
+.chip:hover { transform: translateY(-1px); box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); }
+.chip:active { cursor: grabbing; transform: scale(0.98); }
 .chip.used { display: none; }
-.chip i { font-size: 13px; flex-shrink: 0; }
+.chip i { font-size: 15px; flex-shrink: 0; opacity: 0.8; }
 
-.chip.activity { background: #EAF3DE; border-color: #97C459; color: #27500A; }
-.chip.food     { background: #FAECE7; border-color: #F0997B; color: #712B13; }
-.chip.note     { background: #E6F1FB; border-color: #85B7EB; color: #0C447C; }
+.chip.activity { background: #f0fdf4; border-color: #bbf7d0; color: #166534; }
+.chip.food     { background: #fff7ed; border-color: #ffedd5; color: #9a3412; }
+.chip.note     { background: #f0f9ff; border-color: #e0f2fe; color: #075985; }
 
+/* FORMS */
 .add-row {
-  display: flex; gap: 6px; padding: 10px 12px;
-  border-top: 1px solid #e0ddd8;
+  display: flex; gap: 8px; padding: 16px 18px;
+  border-top: 1px solid var(--border-color); background: var(--bg-card);
 }
 .add-row input {
-  flex: 1; border: 1px solid #ddd; border-radius: 6px;
-  padding: 6px 8px; font-size: 12px; outline: none; background: #fafafa;
+  flex: 1; border: 1px solid var(--border-color); border-radius: 8px;
+  padding: 8px 12px; font-size: 13px; outline: none; transition: border 0.2s;
 }
-.add-row input:focus { border-color: #378ADD; background: #fff; }
+.add-row input:focus { border-color: var(--primary); }
 .add-row select {
-  border: 1px solid #ddd; border-radius: 6px; padding: 5px 6px;
-  font-size: 11px; background: #fff; cursor: pointer; outline: none;
+  border: 1px solid var(--border-color); border-radius: 8px; padding: 8px;
+  font-size: 13px; background: #f8fafc; cursor: pointer; outline: none;
 }
 .add-row button {
-  background: #1a1a18; color: #fff; border: none;
-  border-radius: 6px; padding: 6px 10px; font-size: 13px; cursor: pointer;
+  background: var(--text-main); color: #fff; border: none;
+  border-radius: 8px; padding: 8px 14px; font-size: 14px; cursor: pointer; transition: background 0.2s;
 }
+.add-row button:hover { background: #334155; }
 
-/* MAIN */
-.main { padding: 20px; display: flex; flex-direction: column; gap: 14px; overflow-y: auto; }
+/* MAIN CONTENT */
+.main { padding: 24px; display: flex; flex-direction: column; gap: 20px; overflow-y: auto; }
 
-/* DAY CARD */
+/* DAY CARDS */
 .day-card {
-  background: #fff;
-  border-radius: 14px;
-  border: 1px solid #e0ddd8;
-  overflow: hidden;
+  background: var(--bg-card); border-radius: 16px; border: 1px solid var(--border-color);
+  box-shadow: 0 4px 6px -1px rgba(0,0,0,0.02), 0 2px 4px -1px rgba(0,0,0,0.01); overflow: hidden;
 }
-
-.day-header {
-  display: flex; align-items: center; gap: 10px;
-  padding: 10px 14px;
-  border-bottom: 1px solid #e0ddd8;
-}
+.day-header { display: flex; align-items: center; gap: 14px; padding: 16px 20px; border-bottom: 1px solid var(--border-color); }
 .day-num {
-  width: 36px; height: 36px; border-radius: 10px;
+  width: 42px; height: 42px; border-radius: 12px;
   display: flex; flex-direction: column; align-items: center; justify-content: center;
-  flex-shrink: 0; line-height: 1;
+  flex-shrink: 0; line-height: 1.1;
 }
-.day-num .dn { font-size: 10px; font-weight: 500; margin-bottom: 1px; }
-.day-num .dd { font-size: 15px; font-weight: 600; }
+.day-num .dn { font-size: 11px; font-weight: 700; text-transform: uppercase; opacity: 0.8; }
+.day-num .dd { font-size: 18px; font-weight: 800; }
 .day-info { flex: 1; }
-.day-info h3 { font-size: 13px; font-weight: 500; }
-.day-info p { font-size: 11px; color: #aaa; margin-top: 1px; }
+.day-info h3 { font-size: 15px; font-weight: 700; letter-spacing: -0.01em; }
+.day-info p { font-size: 13px; color: var(--text-muted); margin-top: 1px; font-weight: 500; }
 .nap-pill {
-  font-size: 10px; background: #EEEDFE; color: #534AB7;
-  border: 1px solid #AFA9EC; border-radius: 20px;
-  padding: 3px 8px; display: flex; align-items: center; gap: 3px;
-  white-space: nowrap;
+  font-size: 11px; font-weight: 600; background: #f5f3ff; color: #5b21b6;
+  border: 1px solid #ddd6fe; border-radius: 20px; padding: 4px 10px; display: flex; align-items: center; gap: 4px; white-space: nowrap;
 }
-
 .drive-banner {
-  display: flex; align-items: center; gap: 8px;
-  padding: 8px 14px; background: #F1EFE8;
-  font-size: 12px; color: #5F5E5A;
-  border-bottom: 1px solid #e0ddd8;
+  display: flex; align-items: center; gap: 8px; padding: 10px 20px; background: #f8fafc;
+  font-size: 13px; color: var(--text-muted); font-weight: 500; border-bottom: 1px solid var(--border-color);
 }
-.drive-banner i { font-size: 15px; }
+.drive-banner i { font-size: 16px; color: var(--primary); }
 
-/* THE CARD BODY — two columns */
-.day-body {
-  display: grid;
-  grid-template-columns: 1fr auto 1fr;
-  min-height: 130px;
-}
+.day-body { display: grid; grid-template-columns: 1fr; min-height: 100px; }
+@media (min-width: 600px) { .day-body { grid-template-columns: 1fr auto 1fr; } }
 
-.period {
-  display: flex; flex-direction: column; padding: 10px 12px;
-}
+.period { display: flex; flex-direction: column; padding: 16px; }
 .period-label {
-  font-size: 10px; font-weight: 500; color: #bbb;
-  text-transform: uppercase; letter-spacing: 0.06em;
-  margin-bottom: 8px; display: flex; align-items: center; gap: 4px;
+  font-size: 11px; font-weight: 700; color: var(--text-muted);
+  text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 10px; display: flex; align-items: center; gap: 6px;
 }
-.period-label i { font-size: 12px; }
+.period-label i { font-size: 14px; }
 
+/* DROP ZONES */
 .drop-zone {
-  flex: 1; border-radius: 10px;
-  border: 1.5px dashed #ddd; background: #fafafa;
-  min-height: 80px; padding: 6px;
-  display: flex; flex-wrap: wrap; gap: 5px; align-content: flex-start;
-  transition: background 0.12s, border-color 0.12s;
-  position: relative;
+  flex: 1; border-radius: 12px; border: 2px dashed #cbd5e1; background: #f8fafc;
+  min-height: 90px; padding: 8px; display: flex; flex-wrap: wrap; gap: 6px;
+  align-content: flex-start; transition: all 0.2s; position: relative;
 }
-.drop-zone.drag-over { background: #E6F1FB; border-color: #378ADD; border-style: solid; }
-.drop-zone-hint {
-  font-size: 11px; color: #ccc; position: absolute;
-  inset: 0; display: flex; align-items: center; justify-content: center;
-  pointer-events: none;
-}
+.drop-zone.drag-over { background: #eff6ff; border-color: var(--primary); border-style: solid; }
+.drop-zone-hint { font-size: 12px; color: #94a3b8; position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; pointer-events: none; font-weight: 500; }
 
-/* chips placed in slots are inline/small */
+/* PLACED ITEMS */
 .placed-chip {
-  display: inline-flex; align-items: center; gap: 4px;
-  padding: 4px 8px; border-radius: 20px; font-size: 11px;
-  border: 1px solid; cursor: default;
-  max-width: 100%; overflow: hidden;
+  display: inline-flex; align-items: center; gap: 6px; padding: 6px 12px; border-radius: 20px;
+  font-size: 12px; font-weight: 600; border: 1px solid transparent; cursor: default;
+  max-width: 100%; overflow: hidden; box-shadow: 0 1px 2px rgba(0,0,0,0.02);
 }
-.placed-chip span { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 140px; }
-.placed-chip i.icon { font-size: 12px; flex-shrink: 0; }
-.placed-chip.activity { background: #EAF3DE; border-color: #97C459; color: #27500A; }
-.placed-chip.food     { background: #FAECE7; border-color: #F0997B; color: #712B13; }
-.placed-chip.note     { background: #E6F1FB; border-color: #85B7EB; color: #0C447C; }
-.remove-btn {
-  background: none; border: none; cursor: pointer; font-size: 13px;
-  color: inherit; opacity: 0.45; line-height: 1; padding: 0; margin-left: 2px; flex-shrink: 0;
-}
+.placed-chip span { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 160px; }
+.placed-chip i.icon { font-size: 14px; flex-shrink: 0; }
+.placed-chip.activity { background: #e2fbe8; border-color: #bbf7d0; color: #166534; }
+.placed-chip.food     { background: #ffedd5; border-color: #fed7aa; color: #9a3412; }
+.placed-chip.note     { background: #e0f2fe; border-color: #bae6fd; color: #075985; }
+.remove-btn { background: none; border: none; cursor: pointer; font-size: 14px; color: inherit; opacity: 0.5; line-height: 1; padding: 0 0 0 4px; flex-shrink: 0; font-weight: 700; }
 .remove-btn:hover { opacity: 1; }
 
-.nap-divider {
-  width: 1px; background: #EEEDFE; display: flex; flex-direction: column;
-  align-items: center; justify-content: center; gap: 4px; padding: 10px 0;
-  position: relative;
-}
-.nap-divider::before {
-  content: ''; position: absolute; inset: 0; background: #EEEDFE;
-}
-.nap-divider-label {
-  writing-mode: vertical-rl; text-orientation: mixed;
-  font-size: 10px; font-weight: 500; color: #7F77DD;
-  letter-spacing: 0.05em; white-space: nowrap;
-  position: relative; z-index: 1; transform: rotate(180deg);
-  display: flex; align-items: center; gap: 4px;
-}
+/* NAP DIVIDER */
+.nap-divider { background: #f1f5f9; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 8px 0; position: relative; min-height: 30px; }
+@media (min-width: 600px) { .nap-divider { width: 32px; padding: 16px 0; } }
+.nap-divider-label { font-size: 11px; font-weight: 700; color: #6d28d9; letter-spacing: 0.05em; white-space: nowrap; position: relative; z-index: 1; display: flex; align-items: center; gap: 4px; text-transform: uppercase; }
+@media (min-width: 600px) { .nap-divider-label { writing-mode: vertical-rl; transform: rotate(180deg); } }
 </style>
 </head>
 <body>
 
 <div class="app-header">
-  <h1>Family vacation planner — July 2026</h1>
+  <div class="header-top-row">
+    <h1>Family Vacation Planner — July 2026</h1>
+    <button id="share-btn" onclick="copyShareLink()"><i class="ti ti-share"></i> Copy Share Link</button>
+  </div>
   <div class="route">
-    <span class="rdot" style="background:#378ADD"></span> Virginia Beach
-    <span>→</span><span class="rdot" style="background:#1D9E75"></span> Pittsburgh
-    <span>→</span><span class="rdot" style="background:#D85A30"></span> Chicago
-    <span>→</span><span class="rdot" style="background:#7F77DD"></span> Fayetteville WV
-    <span>→</span><span class="rdot" style="background:#378ADD"></span> Home
+    <span><span class="rdot" style="background:#3b82f6"></span> Virginia Beach</span>
+    <span>→</span><span><span class="rdot" style="background:#10b981"></span> Pittsburgh</span>
+    <span>→</span><span><span class="rdot" style="background:#f97316"></span> Chicago</span>
+    <span>→</span><span><span class="rdot" style="background:#8b5cf6"></span> Fayetteville WV</span>
+    <span>→</span><span><span class="rdot" style="background:#3b82f6"></span> Home</span>
   </div>
 </div>
 
 <div class="layout">
   <div class="sidebar">
     <div class="sidebar-top">
-      <h2>Activity bank</h2>
+      <h2>Activity Bank</h2>
       <p>Drag to a day — items lock to their city</p>
     </div>
     <div class="city-tabs">
@@ -223,7 +248,7 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
     </div>
     <div class="bank-scroll" id="bank-scroll"></div>
     <div class="add-row">
-      <input id="new-label" placeholder="Add item…" onkeydown="if(event.key==='Enter')addCustom()">
+      <input id="new-label" placeholder="Add custom item…" onkeydown="if(event.key==='Enter')addCustom()">
       <select id="new-type">
         <option value="activity">Activity</option>
         <option value="food">Food</option>
@@ -311,16 +336,16 @@ const BANK = {
 };
 
 const DAYS = [
-  { id:'jul12', label:'Sat', date:'Jul 12', city:'Pittsburgh', cityKey:'pitt', color:'#1D9E75', bg:'#E1F5EE', drive:'Drive from Virginia Beach (~7–8 hrs)' },
-  { id:'jul13', label:'Sun', date:'Jul 13', city:'Pittsburgh', cityKey:'pitt', color:'#1D9E75', bg:'#E1F5EE' },
-  { id:'jul14', label:'Mon', date:'Jul 14', city:'Pittsburgh → Chicago', cityKey:'pitt', color:'#1D9E75', bg:'#E1F5EE', drive:'Drive Pittsburgh → Chicago (~5 hrs)' },
-  { id:'jul15', label:'Tue', date:'Jul 15', city:'Chicago', cityKey:'chi', color:'#D85A30', bg:'#FAECE7' },
-  { id:'jul16', label:'Wed', date:'Jul 16', city:'Chicago', cityKey:'chi', color:'#D85A30', bg:'#FAECE7' },
-  { id:'jul17', label:'Thu', date:'Jul 17', city:'Chicago', cityKey:'chi', color:'#D85A30', bg:'#FAECE7' },
-  { id:'jul18', label:'Fri', date:'Jul 18', city:'Chicago', cityKey:'chi', color:'#D85A30', bg:'#FAECE7' },
-  { id:'jul19', label:'Sat', date:'Jul 19', city:'Chicago → Fayetteville', cityKey:'chi', color:'#D85A30', bg:'#FAECE7', drive:'Drive Chicago → Fayetteville WV (~6 hrs)' },
-  { id:'jul20', label:'Sun', date:'Jul 20', city:'Fayetteville WV', cityKey:'fay', color:'#7F77DD', bg:'#EEEDFE' },
-  { id:'jul21', label:'Mon', date:'Jul 21', city:'Fayetteville → Home', cityKey:'fay', color:'#7F77DD', bg:'#EEEDFE', drive:'Drive home to Virginia Beach (~5 hrs)' },
+  { id:'jul12', label:'Sat', date:'Jul 12', city:'Pittsburgh', cityKey:'pitt', color:'#10b981', bg:'#e6f4ea', drive:'Drive from Virginia Beach (~7–8 hrs)' },
+  { id:'jul13', label:'Sun', date:'Jul 13', city:'Pittsburgh', cityKey:'pitt', color:'#10b981', bg:'#e6f4ea' },
+  { id:'jul14', label:'Mon', date:'Jul 14', city:'Pittsburgh → Chicago', cityKey:'pitt', color:'#10b981', bg:'#e6f4ea', drive:'Drive Pittsburgh → Chicago (~5 hrs)' },
+  { id:'jul15', label:'Tue', date:'Jul 15', city:'Chicago', cityKey:'chi', color:'#f97316', bg:'#fff3e0' },
+  { id:'jul16', label:'Wed', date:'Jul 16', city:'Chicago', cityKey:'chi', color:'#f97316', bg:'#fff3e0' },
+  { id:'jul17', label:'Thu', date:'Jul 17', city:'Chicago', cityKey:'chi', color:'#f97316', bg:'#fff3e0' },
+  { id:'jul18', label:'Fri', date:'Jul 18', city:'Chicago', cityKey:'chi', color:'#f97316', bg:'#fff3e0' },
+  { id:'jul19', label:'Sat', date:'Jul 19', city:'Chicago → Fayetteville', cityKey:'chi', color:'#f97316', bg:'#fff3e0', drive:'Drive Chicago → Fayetteville WV (~6 hrs)' },
+  { id:'jul20', label:'Sun', date:'Jul 20', city:'Fayetteville WV', cityKey:'fay', color:'#8b5cf6', bg:'#f3e8ff' },
+  { id:'jul21', label:'Mon', date:'Jul 21', city:'Fayetteville → Home', cityKey:'fay', color:'#8b5cf6', bg:'#f3e8ff', drive:'Drive home to Virginia Beach (~5 hrs)' },
 ];
 
 let schedule = {};
@@ -343,10 +368,76 @@ function getChipById(id) {
       const found = BANK[ck][type].find(c => c.id === id);
       if (found) return { ...found, type: type === 'activities' ? 'activity' : 'food' };
     }
+    const custom = (BANK[ck]._custom || []).find(c => c.id === id);
+    if (custom) return custom;
   }
-  const custom = (BANK[currentCity]._custom || []).find(c => c.id === id);
-  if (custom) return custom;
   return null;
+}
+
+/* STATE HANDLING LOGIC */
+function saveState() {
+  const state = {
+    schedule: schedule,
+    usedChips: Array.from(usedChips),
+    customPitt: BANK.pitt._custom || [],
+    customChi: BANK.chi._custom || [],
+    customFay: BANK.fay._custom || []
+  };
+  localStorage.setItem('heischober_vacation_state', JSON.stringify(state));
+}
+
+function loadState() {
+  const urlParams = new URLSearchParams(window.location.search);
+  const urlState = urlParams.get('trip');
+  let saved = null;
+
+  if (urlState) {
+    try {
+      saved = JSON.parse(decodeURIComponent(escape(atob(urlState))));
+      window.history.replaceState({}, document.title, window.location.pathname);
+    } catch (e) {
+      console.error("Failed to parse link state", e);
+    }
+  }
+
+  if (!saved) {
+    const localData = localStorage.getItem('heischober_vacation_state');
+    if (localData) saved = JSON.parse(localData);
+  }
+
+  if (saved) {
+    schedule = saved.schedule || schedule;
+    usedChips = new Set(saved.usedChips || []);
+    BANK.pitt._custom = saved.customPitt || [];
+    BANK.chi._custom = saved.customChi || [];
+    BANK.fay._custom = saved.customFay || [];
+    saveState();
+  }
+}
+
+function copyShareLink() {
+  const state = {
+    schedule: schedule,
+    usedChips: Array.from(usedChips),
+    customPitt: BANK.pitt._custom || [],
+    customChi: BANK.chi._custom || [],
+    customFay: BANK.fay._custom || []
+  };
+  const encoded = btoa(unescape(encodeURIComponent(JSON.stringify(state))));
+  const shareUrl = `${window.location.origin}${window.location.pathname}?trip=${encoded}`;
+  
+  navigator.clipboard.writeText(shareUrl).then(() => {
+    const btn = document.getElementById('share-btn');
+    const origText = btn.innerHTML;
+    btn.innerHTML = `<i class="ti ti-check"></i> Link Copied!`;
+    btn.style.background = '#10b981';
+    setTimeout(() => {
+      btn.innerHTML = origText;
+      btn.style.background = '';
+    }, 2000);
+  }).catch(err => {
+    alert("Could not copy automatically. Copy this URL: " + shareUrl);
+  });
 }
 
 function renderBank(cityKey) {
@@ -360,7 +451,7 @@ function renderBank(cityKey) {
   html += `<div class="bank-section-label"><i class="ti ti-map-pin" aria-hidden="true"></i>Activities</div>`;
   html += `<div class="bank-chips">`;
   if (actVisible.length === 0) {
-    html += `<div style="font-size:11px;color:#ccc;padding:4px 2px">All placed!</div>`;
+    html += `<div style="font-size:12px;color:#94a3b8;padding:4px 2px">All items placed!</div>`;
   }
   data.activities.forEach(c => {
     const used = usedChips.has(c.id);
@@ -371,10 +462,10 @@ function renderBank(cityKey) {
   html += `</div></div>`;
 
   html += `<div class="bank-section">`;
-  html += `<div class="bank-section-label"><i class="ti ti-fork" aria-hidden="true"></i>Restaurants</div>`;
+  html += `<div class="bank-section-label"><i class="ti ti-meat" aria-hidden="true"></i>Restaurants</div>`;
   html += `<div class="bank-chips">`;
   if (foodVisible.length === 0) {
-    html += `<div style="font-size:11px;color:#ccc;padding:4px 2px">All placed!</div>`;
+    html += `<div style="font-size:12px;color:#94a3b8;padding:4px 2px">All items placed!</div>`;
   }
   data.food.forEach(c => {
     const used = usedChips.has(c.id);
@@ -387,7 +478,7 @@ function renderBank(cityKey) {
   const custom = data._custom || [];
   if (custom.length > 0) {
     html += `<div class="bank-section">`;
-    html += `<div class="bank-section-label"><i class="ti ti-note" aria-hidden="true"></i>Your additions</div>`;
+    html += `<div class="bank-section-label"><i class="ti ti-note" aria-hidden="true"></i>Your Additions</div>`;
     html += `<div class="bank-chips">`;
     custom.forEach(c => {
       const used = usedChips.has(c.id);
@@ -437,16 +528,16 @@ function renderSchedule() {
       html += `<div class="period">`;
       html += `<div class="period-label"><i class="ti ti-sun" aria-hidden="true"></i>Morning · until 1 pm</div>`;
       html += `<div class="drop-zone" id="dz_${day.id}_am" data-day="${day.id}" data-period="am">`;
-      if (s.am.length === 0) html += `<div class="drop-zone-hint">Drop here</div>`;
+      if (s.am.length === 0) html += `<div class="drop-zone-hint">Drop items here</div>`;
       s.am.forEach(c => html += placedChipHTML(c, day.id, 'am'));
       html += `</div></div>`;
 
-      html += `<div class="nap-divider"><div class="nap-divider-label"><i class="ti ti-moon" style="font-size:11px" aria-hidden="true"></i>Nap time</div></div>`;
+      html += `<div class="nap-divider"><div class="nap-divider-label"><i class="ti ti-moon" style="font-size:12px" aria-hidden="true"></i>Nap Time</div></div>`;
 
       html += `<div class="period">`;
       html += `<div class="period-label"><i class="ti ti-sunset" aria-hidden="true"></i>Afternoon · from 3 pm</div>`;
       html += `<div class="drop-zone" id="dz_${day.id}_pm" data-day="${day.id}" data-period="pm">`;
-      if (s.pm.length === 0) html += `<div class="drop-zone-hint">Drop here</div>`;
+      if (s.pm.length === 0) html += `<div class="drop-zone-hint">Drop items here</div>`;
       s.pm.forEach(c => html += placedChipHTML(c, day.id, 'pm'));
       html += `</div></div>`;
 
@@ -518,6 +609,7 @@ function onDrop(e) {
   }
 
   dragging = null;
+  saveState();
   renderBank(currentCity);
   renderSchedule();
   rebindPlaced();
@@ -534,6 +626,7 @@ function rebindPlaced() {
 function removeChip(dayId, period, chipId) {
   schedule[dayId][period] = schedule[dayId][period].filter(c => c.id !== chipId);
   usedChips.delete(chipId);
+  saveState();
   renderBank(currentCity);
   renderSchedule();
   rebindPlaced();
@@ -557,10 +650,13 @@ function addCustom() {
   if (!BANK[currentCity]._custom) BANK[currentCity]._custom = [];
   BANK[currentCity]._custom.push({ id, type, label, icon: iconMap[type] });
   input.value = '';
+  saveState();
   renderBank(currentCity);
 }
 
-renderBank('pitt');
+/* INIT ORDER */
+loadState();
+renderBank(currentCity);
 renderSchedule();
 </script>
 </body>
